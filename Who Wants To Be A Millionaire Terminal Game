@@ -1,0 +1,183 @@
+import random
+
+class Question:
+    def __init__(self, question, options, answer):
+        self.question = question
+        self.options = options
+        self.answer = answer
+
+    def display(self):
+        print(self.question)
+        for option in self.options:
+            print(option)
+
+# Define the questions and answers
+questions = [
+    {
+        "question": "What is the capital of France?",
+        "options": ["A. London", "B. Paris", "C. Rome", "D. Madrid"],
+        "answer": "B"
+    },
+    {
+        "question": "Which planet is known as the 'Red Planet'?",
+        "options": ["A. Venus", "B. Mars", "C. Jupiter", "D. Saturn"],
+        "answer": "B"
+    },
+    {
+        "question": "What is the largest country in the world by land area?",
+        "options": ["A. Russia", "B. Canada", "C. China", "D. United States"],
+        "answer": "A"
+    },
+    {
+        "question": "Who painted the Mona Lisa?",
+        "options": ["A. Pablo Picasso", "B. Vincent van Gogh", "C. Leonardo da Vinci", "D. Claude Monet"],
+        "answer": "C"
+    },
+    {
+        "question": "What is the chemical symbol for gold?",
+        "options": ["A. Go", "B. Au", "C. Ag", "D. Gd"],
+        "answer": "B"
+    },
+    {
+        "question": "Which country won the FIFA World Cup in 2018?",
+        "options": ["A. Brazil", "B. Germany", "C. France", "D. Italy"],
+        "answer": "C"
+    },
+    {
+        "question": "What is the largest ocean in the world?",
+        "options": ["A. Pacific Ocean", "B. Atlantic Ocean", "C. Indian Ocean", "D. Arctic Ocean"],
+        "answer": "A"
+    },
+    {
+        "question": "Who is the author of the Harry Potter book series?",
+        "options": ["A. J.K. Rowling", "B. Stephen King", "C. George R.R. Martin", "D. Roald Dahl"],
+        "answer": "A"
+    },
+    {
+        "question": "Which country is home to the pyramids of Giza?",
+        "options": ["A. Egypt", "B. Mexico", "C. Greece", "D. China"],
+        "answer": "A"
+    },
+    {
+        "question": "What is the largest organ in the human body?",
+        "options": ["A. Liver", "B. Brain", "C. Skin", "D. Heart"],
+        "answer": "C"
+    },
+    {
+        "question": "Who is the CEO of Tesla and SpaceX?",
+        "options": ["A. Bill Gates", "B. Jeff Bezos", "C. Mark Zuckerberg", "D. Elon Musk"],
+        "answer": "D"
+    },
+    {
+        "question": "Which country is famous for its tulips?",
+        "options": ["A. France", "B. Netherlands", "C. Italy", "D. Japan"],
+        "answer": "B"
+    },
+    {
+        "question": "What is the largest bone in the human body?",
+        "options": ["A. Femur", "B. Skull", "C. Humerus", "D. Tibia"],
+        "answer": "A"
+    },
+    {
+        "question": "Which famous scientist developed the theory of general relativity?",
+        "options": ["A. Isaac Newton", "B. Albert Einstein", "C. Galileo Galilei", "D. Nikola Tesla"],
+        "answer": "B"
+    },
+    {
+        "question": "What is the national animal of Australia?",
+        "options": ["A. Kangaroo", "B. Koala", "C. Emu", "D. Wombat"],
+        "answer": "A"
+    },
+]
+
+# Define the lifelines
+lifelines = {
+    "50:50": 1,
+    "Ask the Audience": 1,
+    "Phone a Friend": 1
+}
+
+# Define the prize money
+prize_money = [
+    "$100",
+    "$200",
+    "$300",
+    "$500",
+    "$1,000",
+    "$2,000",
+    "$4,000",
+    "$8,000",
+    "$16,000",
+    "$32,000",
+    "$64,000",
+    "$125,000",
+    "$250,000",
+    "$500,000",
+    "$1,000,000"
+]
+
+def display_question(question):
+    print(question["question"])
+    for option in question["options"]:
+        print(option)
+
+def display_prize_money(question_number):
+    print("Current Question: ", question_number + 1)
+    print("Prize Money: ", prize_money[question_number])
+
+def ask_audience(question):
+    # Simulate the audience response
+    audience_votes = [random.randint(0, 100) for _ in question["options"]]
+    total_votes = sum(audience_votes)
+    audience_distribution = [vote / total_votes * 100 for vote in audience_votes]
+
+    print("Audience Response:")
+    for i, option in enumerate(question["options"]):
+        print(f"{option}: {audience_distribution[i]:.2f}%")
+
+def phone_a_friend(question):
+    # Simulate a friend's advice
+    friend_answer = random.choice(question["options"])
+    print("Friend's advice: Choose option", friend_answer)
+
+def start_game():
+    question_number = 0
+    lifelines_used = []
+    prize_money_won = 0
+
+    print("Welcome to Who Wants To Be a Millionaire!")
+
+    while question_number < len(questions):
+        display_prize_money(question_number)
+        display_question(questions[question_number])
+
+        answer = input("Enter your answer (A, B, C, or D), or type 'Q' to quit: ").upper()
+
+        if answer == questions[question_number]["answer"]:
+            prize_money_won = prize_money[question_number]
+            question_number += 1
+            print("Correct answer!\n")
+        elif answer == "Q":
+            print("You quit the game.")
+            break
+        elif answer in lifelines and lifelines[answer] > 0:
+            if answer == "50:50":
+                # Implement 50:50 lifeline logic
+                # Reduce the lifeline count
+                lifelines[answer] -= 1
+            elif answer == "Ask the Audience":
+                ask_audience(questions[question_number])
+                # Reduce the lifeline count
+                lifelines[answer] -= 1
+            elif answer == "Phone a Friend":
+                phone_a_friend(questions[question_number])
+                # Reduce the lifeline count
+                lifelines[answer] -= 1
+        else:
+            print("Incorrect answer!")
+            break
+
+    print("Game Over")
+    print("Prize Money Won: ", prize_money_won)
+
+start_game()
